@@ -14,7 +14,7 @@ const App = () => {
     <Router>
       <AuthProvider>
         <div className="flex h-screen">
-          <Sidebar className="w-64 bg-gray-800 text-white h-full" />
+          <Sidebar />
           <div className="flex flex-col flex-1 w-full">
             <Header />
             <div className="p-6 flex-1 w-full">
