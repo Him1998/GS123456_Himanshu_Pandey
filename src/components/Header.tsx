@@ -1,4 +1,3 @@
-import { FiUser } from "react-icons/fi";
 import GsynergyLogo from "../assets/Gsynergy Logo V2 Long Description.svg"
 
 const Header = () => {

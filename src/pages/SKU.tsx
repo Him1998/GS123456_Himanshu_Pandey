@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
 const SKUPage = () => {
@@ -18,13 +18,13 @@ const SKUPage = () => {
     }, []);
 
     return (
-        <div className="p-6 container">
+        <div className="p-6 w-full flex-1">
             <h1 className="text-2xl font-bold mb-4">SKU Data</h1>
 
             {skuData.length > 0 ? (
                 <>
                     {/* Chart */}
-                    <div className="mt-6">
+                    <div className="mt-6 w-[60vw]">
                         <h3 className="text-lg font-semibold">SKU Distribution</h3>
                         <ResponsiveContainer width="100%" height={300}>
                             <BarChart data={skuData}>

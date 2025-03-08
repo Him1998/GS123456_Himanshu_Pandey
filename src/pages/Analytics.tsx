@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   LineChart, Line, XAxis, YAxis, Tooltip, Legend, CartesianGrid,
   BarChart, Bar, PieChart, Pie, Cell,
@@ -97,7 +97,7 @@ const Analytics = () => {
       <h2 className="text-xl font-semibold mt-6">💰 Gross Margin % vs Sales</h2>
       <PieChart width={400} height={300}>
         <Pie data={salesVsGMPie} dataKey="GMPercent" nameKey="name" cx="50%" cy="50%" outerRadius={100}>
-          {salesVsGMPie.map((_, index) => (
+          {salesVsGMPie.map((_: unknown, index: number) => (
             <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
           ))}
         </Pie>

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import {
+    BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer
+} from "recharts";
 
 const Dashboard = () => {
-    const [data, setData] = useState({});
-    const [activeTab, setActiveTab] = useState(null);
+    const [data, setData] = useState<Record<string, any[]>>({});
+    const [activeTab, setActiveTab] = useState<string | null>(null);
 
     useEffect(() => {
         const storedData = localStorage.getItem("excelData");
@@ -26,35 +28,60 @@ const Dashboard = () => {
             const workbook = XLSX.read(data, { type: "array" });
 
             let allData: Record<string, any[]> = {};
-
-            // Loop through all sheets
             workbook.SheetNames.forEach((sheetName) => {
                 const sheet = workbook.Sheets[sheetName];
                 allData[sheetName] = XLSX.utils.sheet_to_json(sheet);
             });
 
-            // Store all sheets in localStorage
             localStorage.setItem("excelData", JSON.stringify(allData));
-
-            console.log("Stored Data:", allData);
             alert("Upload Successful!");
-            setData(allData); // Update UI with the stored data
+            setData(allData);
         };
 
         reader.readAsArrayBuffer(file);
     };
 
-    // Function to generate a simple bar chart for each sheet
-    const renderChart = (sheetData) => {
+    const updateLocalStorage = (updatedData: Record<string, any[]>) => {
+        localStorage.setItem("excelData", JSON.stringify(updatedData));
+    };
+
+    const handleCellChange = (sheet: string, rowIndex: number, key: string, value: string) => {
+        const updatedData = { ...data };
+        updatedData[sheet][rowIndex][key] = value;
+        setData(updatedData);
+        updateLocalStorage(updatedData);
+    };
+
+    const addRow = (sheet: string) => {
+        const updatedData = { ...data };
+        const newRow: Record<string, any> = {};
+
+        // Initialize new row with empty values
+        Object.keys(updatedData[sheet][0]).forEach((key) => {
+            newRow[key] = "";
+        });
+
+        updatedData[sheet].push(newRow);
+        setData(updatedData);
+        updateLocalStorage(updatedData);
+    };
+
+    const deleteRow = (sheet: string, rowIndex: number) => {
+        const updatedData = { ...data };
+        updatedData[sheet].splice(rowIndex, 1); // Remove row
+        setData(updatedData);
+        updateLocalStorage(updatedData);
+    };
+
+    const renderChart = (sheetData: { [key: string]: any }[]) => {
         if (!sheetData || sheetData.length === 0) return null;
 
-        // Assuming first column is categorical and second is numerical
         const keys = Object.keys(sheetData[0]);
         if (keys.length < 2) return <p>No numerical data for visualization.</p>;
 
         const chartData = sheetData.map((row) => ({
             category: row[keys[0]],
-            value: Number(row[keys[1]]) || 0, // Convert to number if possible
+            value: Number(row[keys[1]]) || 0,
         }));
 
         return (
@@ -81,7 +108,7 @@ const Dashboard = () => {
                 {Object.keys(data).map((sheet, index) => (
                     <button
                         key={index}
-                        className={`px-4 py-2 ${activeTab === sheet ? "bg-blue-500 text-white" : "bg-gray-200"}`}
+                        className={`px-4 py-2 ${activeTab === sheet ? "bg-blue-500 text-gray" : "bg-gray-200"}`}
                         onClick={() => setActiveTab(sheet)}
                     >
                         {sheet}
@@ -90,24 +117,48 @@ const Dashboard = () => {
             </div>
 
             {/* Table Display */}
-            {activeTab && data[activeTab] ? (
+            {activeTab && data[activeTab]?.length ? (
                 <div className="mt-4">
                     <h2 className="text-xl font-semibold mb-2">{activeTab} Data</h2>
+
+                    <button
+                        className="px-4 py-2 bg-green-500 text-gray rounded mb-2"
+                        onClick={() => addRow(activeTab)}
+                    >
+                        ➕ Add Row
+                    </button>
+
                     <div className="overflow-x-auto">
                         <table className="border-collapse w-full mt-2">
                             <thead>
                                 <tr className="border-b bg-gray-100">
-                                    {Object.keys(data[activeTab][0] || {}).map((key) => (
+                                    {Object.keys(data[activeTab]?.[0] || {}).map((key) => (
                                         <th key={key} className="p-2 border">{key}</th>
                                     ))}
+                                    <th className="p-2 border">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {data[activeTab].map((row, rowIndex) => (
-                                    <tr key={rowIndex} className="border-b">
-                                        {Object.values(row).map((value, colIndex) => (
-                                            <td key={colIndex} className="p-2 border">{value}</td>
+                                {data[activeTab]?.map((row: Record<string, unknown>, rowIndex: number) => (
+                                    <tr key={rowIndex}>
+                                        {Object.entries(row).map(([key, value], colIndex) => (
+                                            <td key={colIndex} className="p-2 border">
+                                                <input
+                                                    type="text"
+                                                    value={String(value)}
+                                                    onChange={(e) => handleCellChange(activeTab, rowIndex, key, e.target.value)}
+                                                    className="border p-1 w-full"
+                                                />
+                                            </td>
                                         ))}
+                                        <td className="p-2 border text-center">
+                                            <button
+                                                className="bg-red-500 text-gray px-2 py-1 rounded"
+                                                onClick={() => deleteRow(activeTab, rowIndex)}
+                                            >
+                                                ❌ Delete
+                                            </button>
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>
