@@ -12,7 +12,7 @@ const Sidebar = () => {
     { name: "Dashboard", path: "/", icon: <FiGrid /> },
     { name: "SKU Management", path: "/sku", icon: <FiBox /> },
     { name: "Planning", path: "/planning", icon: <FiClipboard /> },
-    { name: "Charts", path: "/charts", icon: <FiBarChart2 /> },
+    { name: "Pnalytics", path: "/analytics", icon: <FiBarChart2 /> },
   ];
 
   return (
