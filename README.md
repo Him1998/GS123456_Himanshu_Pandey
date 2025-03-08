@@ -1,28 +1,63 @@
 # React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Analytics Dashboard
 
-Currently, two official plugins are available:
+This project is a **React-based Analytics Dashboard**, built using **Vite** for fast development and optimized performance. It provides data insights through interactive charts and visualizations using **Recharts**.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## Expanding the ESLint configuration
+- 📊 **Sales Trends Over Time** (Line Chart)
+- 🏬 **Top Performing Stores** (Bar Chart)
+- 💰 **Gross Margin % vs Sales** (Pie Chart)
+- 🏷️ **Category-Wise Revenue Breakdown** (Bar Chart)
+- ⚡ **Optimized for Large Datasets**
+- 🔥 **Built with Vite for Fast Refresh**
+- ✅ **TypeScript & ESLint for Code Quality**
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 📦 Tech Stack
+
+- **React + Vite** for a fast development environment
+- **TypeScript** for better maintainability
+- **Recharts** for data visualization
+- **ESLint + Prettier** for consistent coding standards
+
+## 📌 Installation
+
+```sh
+# Clone the repository
+git clone https://github.com/Him1998/GS123456_Himanshu_Pandey.git
+cd GS123456_Himanshu_Pandey
+
+# Install dependencies
+yarn install  # or npm install
+
+# Start the development server
+yarn dev  # or npm run dev
+```
+
+## 📊 Data Structure
+
+The dashboard processes and visualizes **four key data categories**:
+
+1. **Calculations** → Sales, GM%, GM Dollars, Cost
+2. **Calendar** → Month, Week Labels
+3. **Chart Data** → Sales, GM%, Week-wise trends
+4. **SKUs & Stores** → Product & Store details
+
+Data is loaded from **localStorage** and processed dynamically for visualization.
+
+## 📜 ESLint Configuration
+
+For production-ready development, update your **ESLint config** to enable type-aware lint rules:
 
 ```js
 export default tseslint.config({
   extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
     ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
     ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
     ...tseslint.configs.stylisticTypeChecked,
   ],
   languageOptions: {
-    // other options...
     parserOptions: {
       project: ['./tsconfig.node.json', './tsconfig.app.json'],
       tsconfigRootDir: import.meta.dirname,
@@ -31,7 +66,7 @@ export default tseslint.config({
 })
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+You can also install **React-specific ESLint plugins**:
 
 ```js
 // eslint.config.js
@@ -40,15 +75,27 @@ import reactDom from 'eslint-plugin-react-dom'
 
 export default tseslint.config({
   plugins: {
-    // Add the react-x and react-dom plugins
     'react-x': reactX,
     'react-dom': reactDom,
   },
   rules: {
-    // other rules...
-    // Enable its recommended typescript rules
     ...reactX.configs['recommended-typescript'].rules,
     ...reactDom.configs.recommended.rules,
   },
 })
 ```
+
+## 🎯 Contributing
+
+Contributions are welcome! Feel free to fork the repo, submit PRs, or report issues.
+
+## 🛠️ Future Enhancements
+
+- 📈 Advanced filtering & drill-down reports
+- 🔗 API integration for real-time data
+- 🎨 Customizable themes & UI enhancements
+
+## 📜 License
+
+MIT License. Feel free to use and modify as needed!
+
